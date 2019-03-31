@@ -4,7 +4,7 @@
  * @Author: Veagau
  * @LastEditors: Veagau
  * @Date: 2019-03-27 15:49:14
- * @LastEditTime: 2019-03-30 22:42:51
+ * @LastEditTime: 2019-03-31 15:25:40
  */
 
 //全局变量定义
@@ -57,7 +57,7 @@ function popupDeal(params) {
  * @return: 
  */
 function wechatShare(loop) {
-    for (var i = 1; i <= loop; i++) {
+    /* for (var i = 1; i <= loop; i++) {
         while (!text("观点").exists());
         toast("开始分享第" + i + "次");
         var shareIcon = className("android.widget.ImageView").bounds(918, 1818, 1026, 1890).depth(2).findOne();
@@ -71,7 +71,10 @@ function wechatShare(loop) {
         toSDelay(2);
         back();
         toSDelay(3);
-    }
+    } */
+    var count = 666;
+    console.show();
+    print("count:" ,count);
     return true;
 }
 
@@ -119,7 +122,7 @@ function videoShare() {
         toast("进入第二条视频新闻");
         toSDelay(5);
     }
-    if (text("继续播放").exists()) {
+    /* if (text("继续播放").exists()) {
         text("继续播放").click();
     }
     if (text("重新播放").exists()) {
@@ -165,7 +168,7 @@ function videoShare() {
         }
     }
     toSDelay(2);
-    toast("第三条视频观看完成");
+    toast("第三条视频观看完成"); */
     toSDelay(5);
     wechatShare(loops);
     toast("视频分享任务完成");
@@ -197,8 +200,8 @@ function videoStudy() {
     if (click("联播频道") == true) {
         toast("进入联播频道");
     }
-    toSDelay(5);
-    videoWatch()
+/*     toSDelay(5);
+    videoWatch(); */
     toSDelay(5);
     videoShare();
     return true;
@@ -245,4 +248,4 @@ function newsStudy() {
 auto.waitFor(); //辅助权限等待授予
 initScript();
 videoStudy();
-newsStudy();
+//newsStudy();
