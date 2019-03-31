@@ -4,13 +4,13 @@
  * @Author: Veagau
  * @LastEditors: Veagau
  * @Date: 2019-03-27 15:49:14
- * @LastEditTime: 2019-03-31 16:07:16
+ * @LastEditTime: 2019-03-31 16:15:19
  */
 console.show();//调试窗口
 //全局变量定义
 var vTimeTotal = 20;//视频学习目标时间（秒），默认视频学习时长25分钟（25*60）
 var sTimeTotal = 10;//视频分享目标时间（秒），默认视频分享时长10秒
-var loops = 1;//视频分享次数，默认分享6次
+var loops = 3;//视频分享次数，默认分享6次
 var rTimeTotal = 10;//文章阅读目标时间（秒），默认文章阅读时长16分钟（16*60）
 
 /**
@@ -59,32 +59,22 @@ function popupDeal(params) {
 function wechatShare(loop) {
     for (var i = 1; i <= loop; i++) {
         while (!text("观点").exists());
-        toast("开始分享第" + i + "次");
+        toast("开始分享第" + i + "/" + loop + "次");
         var shareIcon = classNameContains("ImageView").depth(2).findOnce(2);
         if(shareIcon.click()==true){
             print("点击分享按钮");
         }
         toSDelay(5);
         while (!textContains("分享给微信").exists());
-        if(click("分享给微信\\n好友")==true){
+        if(click("分享给微信\n好友")==true){
             toast("跳转微信中……");
         }
-        /* var wechatIcon = className("android.widget.RelativeLayout").bounds(570, 976, 780, 1273).depth(4).findOne();
-        wechatIcon.click(); */
-        //toast("跳转微信中……");
         while (!text("多选").exists());//等待微信界面载入
         toSDelay(2);
         back();
         toSDelay(3);
     }
-/*     var clickImage = classNameContains("ImageView").depth(2).find();
-    var count = clickImage.size();
-    print("count:" ,count);
-    for(var i=0;i<count;i++){
-        print("第%d个图片控件的位置是",i+1);
-        print(clickImage[i].bounds());
-        print("\n");
-    }  */
+    toast("视频分享任务完成");
     return true;
 }
 
@@ -181,16 +171,14 @@ function videoShare() {
     toast("第三条视频观看完成"); */
     toSDelay(5);
     wechatShare(loops);
-    /* toast("视频分享任务完成");
     toSDelay(2);
-    var starIcon = className("android.widget.ImageView").bounds(774, 1818, 918, 1890).depth(2).findOne();
+    var starIcon = classNameContains("ImageView").depth(2).findOnce(1);
     if (starIcon.click() == true) {
-        console.log("star's bound:",starIcon.bounds());
         popupDeal();//处理首次收藏提示弹窗
         toast("收藏成功");
         toSDelay(5);
     }
-    back(); */
+    back();
     return true;
 }
 
