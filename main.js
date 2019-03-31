@@ -4,7 +4,7 @@
  * @Author: Veagau
  * @LastEditors: Veagau
  * @Date: 2019-03-27 15:49:14
- * @LastEditTime: 2019-03-31 16:15:19
+ * @LastEditTime: 2019-03-31 16:38:05
  */
 console.show();//调试窗口
 //全局变量定义
@@ -48,6 +48,33 @@ function popupDeal(params) {
     while (text("我知道了").exists()) {
         text("我知道了").click();
     }
+    while (text("继续播放").exists()) {
+        text("继续播放").click();
+    }
+    while (text("重新播放").exists()) {
+        text("重新播放").click();
+    }
+    return true;
+}
+
+/**
+ * @name: 视频计时函数
+ * @param {type} 
+ * @return: 
+ */
+function watchTimer(time) {
+    for (var timer = 0; timer < time;) {
+        toSDelay(5);
+        timer += 5
+        if (timer <= 60) {
+            toast("已学习" + timer + "秒");
+        }
+        else {
+            var timerM = parseInt(timer / 60);
+            var timerS = timer - timerM * 60;
+            toast("已学习" + timerM + "分" + timerS + "秒");
+        }
+    }
     return true;
 }
 
@@ -79,6 +106,21 @@ function wechatShare(loop) {
 }
 
 /**
+ * @name: 视频收藏函数
+ * @param {type} 
+ * @return: 
+ */
+function videoLike() {
+    var starIcon = classNameContains("ImageView").depth(2).findOnce(1);
+    if (starIcon.click() == true) {
+        popupDeal();//处理首次收藏提示弹窗
+        toast("收藏成功");
+        toSDelay(5);
+    }
+    return true;
+}
+
+/**
  * @name: 视频学习子任务01→观看新闻联播
  * @param {type} 
  * @return: 
@@ -88,25 +130,11 @@ function videoWatch() {
         toast("进入新闻联播");
         toSDelay(5);
     }
-    if (text("继续播放").exists()) {
-        text("继续播放").click();
-    }
-    if (text("重新播放").exists()) {
-        text("重新播放").click();
-    }
-    for (var vTime = 0; vTime < vTimeTotal;) {
-        toSDelay(5);
-        vTime += 5
-        if (vTime <= 60) {
-            toast("已学习" + vTime + "秒");
-        }
-        else {
-            var vTimeM = parseInt(vTime / 60);
-            var vTimeS = vTime - vTimeM * 60;
-            toast("已学习" + vTimeM + "分" + vTimeS + "秒");
-        }
-    }
-    toast("视频观看完成");
+    popupDeal();
+    if(watchTimer(vTimeTotal)==true){
+        toSDelay(2);
+        toast("视频观看完成");
+    } 
     toSDelay(5);
     back();
     return true;
@@ -122,26 +150,11 @@ function videoShare() {
         toast("进入第二条视频新闻");
         toSDelay(5);
     }
-    /* if (text("继续播放").exists()) {
-        text("继续播放").click();
-    }
-    if (text("重新播放").exists()) {
-        text("重新播放").click();
-    }
-    for (var sTime1 = 0; sTime1 < sTimeTotal;) {
-        toSDelay(5);
-        sTime1 += 5
-        if (sTime1 <= 60) {
-            toast("已学习" + sTime1 + "秒");
-        }
-        else {
-            var sTimeM1 = parseInt(sTime1 / 60);
-            var sTimeS1 = sTime1 - sTimeM1 * 60;
-            toast("已学习" + sTimeM1 + "分" + sTimeS1 + "秒");
-        }
-    }
-    toSDelay(2);
-    toast("第二条视频观看完成");
+    popupDeal();
+    if(watchTimer(sTimeTotal)==true){
+        toSDelay(2);
+        toast("第二条视频观看完成");
+    } 
     toSDelay(5);
     back();
     toSDelay(3);
@@ -149,41 +162,18 @@ function videoShare() {
         toast("进入第三条视频新闻");
         toSDelay(5);
     }
-    if (text("继续播放").exists()) {
-        text("继续播放").click();
-    }
-    if (text("重新播放").exists()) {
-        text("重新播放").click();
-    }
-    for (var sTime2 = 0; sTime2 < sTimeTotal;) {
-        toSDelay(5);
-        sTime2 += 5
-        if (sTime2 <= 60) {
-            toast("已学习" + sTime2 + "秒");
-        }
-        else {
-            var sTimeM2 = parseInt(sTime2 / 60);
-            var sTimeS2 = sTime2 - sTimeM2 * 60;
-            toast("已学习" + sTimeM2 + "分" + sTimeS2 + "秒");
-        }
-    }
-    toSDelay(2);
-    toast("第三条视频观看完成"); */
+    popupDeal();
+    if(watchTimer(sTimeTotal)==true){
+        toSDelay(2);
+        toast("第三条视频观看完成");
+    } 
     toSDelay(5);
     wechatShare(loops);
     toSDelay(2);
-    var starIcon = classNameContains("ImageView").depth(2).findOnce(1);
-    if (starIcon.click() == true) {
-        popupDeal();//处理首次收藏提示弹窗
-        toast("收藏成功");
-        toSDelay(5);
-    }
+    videoLike();
     back();
     return true;
 }
-
-
-
 
 /**
  * @name: 视频学习
@@ -199,12 +189,13 @@ function videoStudy() {
     if (click("联播频道") == true) {
         toast("进入联播频道");
     }
-/*     toSDelay(5);
-    videoWatch(); */
+    toSDelay(5);
+    videoWatch();
     toSDelay(5);
     videoShare();
     return true;
 }
+
 /**
  * @name: 文章学习函数
  * @param {type} 
@@ -226,20 +217,10 @@ function newsStudy() {
         toast("开始阅读第" + count + "篇要闻……");
         toSDelay(3);
     }
-    for (var rTime = 0; rTime < rTimeTotal;) {
-        toSDelay(5);
-        rTime += 5
-        if (rTime <= 60) {
-            toast("已阅读" + rTime + "秒");
-        }
-        else {
-            var rTimeM = parseInt(rTime / 60);
-            var rTimeS = rTime - rTimeM * 60;
-            toast("已学习" + rTimeM + "分" + rTimeS + "秒");
-        }
+    if(watchTimer(rTimeTotal)==true){
+        toSDelay(2);
+        toast("文章阅读完成");
     }
-    toSDelay(2);
-    toast("文章阅读完成");
     toSDelay(5);
     back();
 }
@@ -247,4 +228,4 @@ function newsStudy() {
 auto.waitFor(); //辅助权限等待授予
 initScript();
 videoStudy();
-//newsStudy();
+newsStudy();
