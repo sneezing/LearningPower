@@ -4,9 +4,12 @@
  * @Author: Veagau
  * @LastEditors: Veagau
  * @Date: 2019-03-27 15:49:14
- * @LastEditTime: 2019-03-31 16:38:05
+ * @LastEditTime: 2019-03-31 17:28:21
  */
-console.show();//调试窗口
+//console.show();//调试窗口
+"auto";//辅助权限授予
+auto.waitFor();
+auto.setMode("normal");
 //全局变量定义
 var vTimeTotal = 20;//视频学习目标时间（秒），默认视频学习时长25分钟（25*60）
 var sTimeTotal = 10;//视频分享目标时间（秒），默认视频分享时长10秒
@@ -225,7 +228,6 @@ function newsStudy() {
     back();
 }
 
-auto.waitFor(); //辅助权限等待授予
 initScript();
 videoStudy();
 newsStudy();
