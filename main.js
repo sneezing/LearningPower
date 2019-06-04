@@ -13,7 +13,7 @@
 auto.waitFor();//辅助权限授予
 auto.setMode("normal");
 //全局变量定义
-const DEBUG = true;
+//const DEBUG = true;
 const WIDTH = Math.min(device.width, device.height);
 const HEIGHT = Math.max(device.width, device.height);
 var vTimeTotal = DEBUG ? 1 : 180;//视频学习目标时间（秒），默认视频学习时长6分钟（18*60）
@@ -129,7 +129,7 @@ function wechatShare(loop) {
 function videoLike() {
     var starIcon = classNameContains("ImageView").depth(10).drawingOrder(3);
     for (var i=1;i<5;i++) {
-        toSDelay(2);
+        toSDelay(3);
         starIcon.click();
         popupDeal();
     }
@@ -189,7 +189,7 @@ function videoWatch() {
         if (i < 5){
             back();
         } else {    // 最后一次分享收藏
-            wechatShare();
+            wechatShare(2);
             toSDelay(2);
             videoLike();
             back();
@@ -213,25 +213,7 @@ function videoWatch() {
  * @param {none} 
  * @return: none
  */
-// function videoShare() {
-//     console.log("videowatch: start.");
-//     if (click("央视网", 0) == true) {
-//         toastLog("进入第1条视频新闻");
-//         toSDelay(5);
-//     }
-//     popupDeal();
-//     if(watchTimer(vTimeTotal)==true){
-//         toSDelay(2);
-//         toastLog("第1条视频观看完成");
-//     } 
-//     console.log("VideoShare: start.");
-//     wechatShare(2);
-//     toSDelay(2);
-//     videoLike();  
-//     back();
-//     toSDelay(5);
-//     return true;
-// }
+
 
 /**
  * @name: 视频学习
