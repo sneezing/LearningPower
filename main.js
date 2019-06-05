@@ -13,7 +13,7 @@
 auto.waitFor();//辅助权限授予
 auto.setMode("normal");
 //全局变量定义
-//const DEBUG = true;
+const DEBUG = false;
 const WIDTH = Math.min(device.width, device.height);
 const HEIGHT = Math.max(device.width, device.height);
 var vTimeTotal = DEBUG ? 1 : 180;//视频学习目标时间（秒），默认视频学习时长6分钟（18*60）
@@ -79,7 +79,7 @@ function popupDeal(params) {
  */
 function watchTimer(time) {
     for (var timer = 0; timer < time;) {
-        toSDelay(DEBUG ? 1 : 5);
+        toSDelay(5);
         timer += 5
         if (timer <= 60) {
             toast("已学习" + timer + "秒");
@@ -103,15 +103,15 @@ function wechatShare(loop) {
         while (!text("观点").exists());
         toast("开始分享第" + i + "/" + loop + "次");
         var shareIcon = classNameContains("ImageView").depth(10).drawingOrder(4);
-        if(shareIcon.click()==true){
+        if(shareIcon.click() == true){
             print("点击分享按钮");
         }
         toSDelay(2);
         while (!textContains("分享给微信").exists());
-        if(click("分享给微信\n好友")==true){
+        if(click("分享给微信\n好友") == true){
             toast("跳转微信中……");
         }
-        while (!text("多选").exists());//等待微信界面载入
+        while (!text("多选").exists()); // 等待微信界面载入
         toSDelay(2);
         back();
         popupDeal();
@@ -128,7 +128,7 @@ function wechatShare(loop) {
  */
 function videoLike() {
     var starIcon = classNameContains("ImageView").depth(10).drawingOrder(3);
-    for (var i=1;i<5;i++) {
+    for (var i = 1; i < 5; i++) {
         toSDelay(3);
         starIcon.click();
         popupDeal();
@@ -137,15 +137,15 @@ function videoLike() {
 }
 
 /**
- * @name: 视频学习子任务01→观看新闻联播
+ * @name: 视频学习：观看新闻联播
  * @param {type} 
  * @return: 
  */
 function videoWatch() {
     console.log("开始视听学习");
 
-    // 搜索联播频道框
-    function getYsws(){
+    /** 搜索包含"央视网"的父控件 */
+    function getCenterNets(){
         var layer = text("联播频道").findOnce();
         function dfs(uiObj) {
             if (uiObj.text() == "央视网") {
@@ -164,20 +164,27 @@ function videoWatch() {
                 break;  // 如果dfs找到央视网则跳出
             }
         }
-        return layer.children().find(text("央视网"));
+        return layer.children().find(boundsInside(1, 1, WIDTH - 1, HEIGHT - 1).text("央视网"));
     }
-    
+    /** 溯源式点击 */
+    function clickTraceParent (uiObj) {
+        try {
+            while (!uiObj.click()) {
+                uiObj = uiObj.parent();
+            }
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 
     // 开始看视频
     var count = 0;  // 央视网s的计数器
-    var ysws = getYsws();
+    var centerNets = getCenterNets();
     for(var i = 0; i < 6; i++){
         console.log("watching videos");
-        // console.verbose(ysws.get(i));
-        var b = ysws.get(count).bounds();
-        // console.verbose(b);
-        if (click(b.centerX(), b.centerY()) == true) {
-            toastLog("进入第"+(i+1)+"个视频");
+        if (clickTraceParent(centerNets[count]) == true) {
+            toastLog("进入第" + (i + 1) + "个视频");
             toSDelay(1);
             count++;
         }
@@ -195,11 +202,11 @@ function videoWatch() {
             back();
             break; 
         }       
-        if (count == ysws.size()-1){
+        if (count == centerNets.size()-1){
             toSDelay(3);
-            console.log("xiahua");
-            swipe(WIDTH/2, HEIGHT/5*4, WIDTH/2, HEIGHT/5, 1000);
-            ysws = getYsws();
+            console.log("videoWatch: swipe.");
+            swipe(WIDTH / 2, HEIGHT / 5 * 4, WIDTH / 2, HEIGHT / 5, 1000);
+            centerNets = getCenterNets();
             count = 1;
         } 
               
